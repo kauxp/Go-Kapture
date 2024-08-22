@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql-eight
+      - DB_USER=param
+      - DB_PASSWORD=param
+      - DB_NAME=gokapture
+      - DB_PORT=3307
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gokapture
+      MYSQL_USER: param
+      MYSQL_PASSWORD: param
+    ports:
+      - "3308:3307"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:

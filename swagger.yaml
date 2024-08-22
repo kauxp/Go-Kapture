@@ -1,0 +1,144 @@
+openapi: 3.0.0
+info:
+  title: Task Management API
+  description: API documentation for the Task Management system
+  version: 1.0.0
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User registered successfully
+        '400':
+          description: Bad request
+
+  /login:
+    post:
+      summary: Login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User logged in successfully
+        '400':
+          description: Bad request
+
+  /tasks:
+    post:
+      summary: Create a new task
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '201':
+          description: Task created successfully
+        '400':
+          description: Bad request
+
+    get:
+      summary: Get all tasks
+      responses:
+        '200':
+          description: List of tasks
+        '500':
+          description: Internal server error
+
+  /tasks/{id}:
+    put:
+      summary: Update a task
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: Task updated successfully
+        '400':
+          description: Bad request
+
+    delete:
+      summary: Delete a task
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Task deleted successfully
+        '400':
+          description: Bad request
+
+  /tasks/filter:
+    get:
+      summary: Filter tasks
+      responses:
+        '200':
+          description: List of filtered tasks
+        '500':
+          description: Internal server error
+
+  /tasks/search:
+    get:
+      summary: Search tasks
+      responses:
+        '200':
+          description: List of searched tasks
+        '500':
+          description: Internal server error
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
